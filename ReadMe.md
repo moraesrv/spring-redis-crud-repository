@@ -1,5 +1,9 @@
-# SPRING INTEGRADO COM REDIS VIA CRUD REPOSITORY 
+# SPRING INTEGRADO COM REDIS VIA CRUDREPOSITORY 
 Essa aplicação consiste em utilizar o serviço de cache do Redis para armazenar dados no Redis utilizando a interface CRUD Repository.
+
+Caso você deseje trabalhar com o Redis utilizando Jedis ou o cache do Spring, veja os projetos abaixo:
+- [Redis via Jedis](https://github.com/moraesrv/spring-redis-jedis)
+- [Redis via cache do Spring](https://github.com/moraesrv/spring-redis-annotations)
 
 ## PRÉ-REQUISITOS
 Aplicações que devem estar instaladas em sua máquina:
@@ -8,30 +12,30 @@ Aplicações que devem estar instaladas em sua máquina:
 - IDE com suporte a Java de sua preferência
 
 ## SPRING
-Para usar o serviço do Redis no Spring você deve utilizar:
+Para usar a interface Crud Repository no Spring para salvar os dados no Redis você deve utilizar:
 
 **Dependências**
-- **spring-boot-starter-data-redis**: utilizada para integrar o Redis à sua aplicação Spring.
 - **jedis**: biblioteca Java popular que fornece uma interface para interagir com o Redis.
+- **spring-boot-starter-data-jpa**: é uma das dependências principais para integrar a aplicação com um banco de dados relacional utilizando JPA (Java Persistence API).
+- **spring-boot-starter-data-redis**: utilizada para integrar o Redis à sua aplicação Spring.
 - **spring-boot-starter-json**: permite as aplicações Spring trabalharem com JSON.
 - **jackson-databind**: biblioteca responsável pela serialização e desserialização de objetos Java para JSON e vice-versa.
-- **spring-boot-starter-data-jpa**: é uma das dependências principais para integrar a aplicação com um banco de dados relacional utilizando JPA (Java Persistence API).
 
-## JEDIS
-O Jedis permite que sua aplicação Java se conecte ao servidor Redis, armazene e recupere dados, e execute uma variedade de operações no Redis.
+**Obs**: Como o Redis não é um banco relacional deve-se desabilitar a configuração automática do Data Source. 
+```
+@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class })
+```
 
-### CONFIGURAÇÃO
-Além de adicionar a dependência ao projeto, para utilizar o Jedis é necessário criar uma classe de configuração dessa biblioteca, informando os dados de conexão com o Redis.
 
-### MÉTODOS
-Abaixo serão listados os métodos do Jedis que foram utilizados nesse projeto:
-- **get()**: consultar um registro no Redis
-- **mget()**: consultar múltiplos registros no Redis
-- **del()**: remover um ou mais registros no Redis
-- **set()**: inserir/atualizar um registro no Redis
-- **flushDB()**: remover todos os registro do Redis
-- **pipelined()**:  permite que você envie vários comandos para o Redis de uma vez sem esperar pelas respostas de cada comando individualmente.
-- **sync()**: persiste no Redis todos os registros adicionados a pipeline.
+**Configuração**
+
+Especifica os dados de conexão com o REDIS no application.properties:
+```
+spring.data.redis.host=127.0.0.1
+spring.data.redis.port=6379
+spring.data.redis.password=root
+spring.data.redis.timeout=2000
+```
 
 ## DOCKER
 Para utilizar o serviço de cache iremos instanciar um container Redis no Docker, para isso execute os seguintes comandos no terminal:
@@ -89,8 +93,6 @@ keys pessoa*
 
 Para consultar uma chave:
 ```
-get pessoa:3
-hgetall pessoa:3
 hgetall pessoa:3
 ```
 
